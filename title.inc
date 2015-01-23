@@ -1,6 +1,6 @@
-; title screen
 .BANK 0 SLOT 0
 .SECTION "title" SEMIFREE
+
 TitleScreen:
 start_show:
 	lda.w num_pictures
@@ -81,8 +81,6 @@ DisplayPicture:
 
 	rts
 .ENDS
-
-
     
     IncludePicture title
 
@@ -97,4 +95,5 @@ num_pictures:
 
 picture_list:
 	IncludePictInfo title
+	
 .ENDS
