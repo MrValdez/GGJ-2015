@@ -27,11 +27,3 @@
 	.dw endpic_\1 - pic_\1		;size of pic
 	.dw pic_\1				;address offset - pic
 .ENDM
-
-.ENUM $00
-pics_remaining	db
-picture_bank	dw	;high byte not used, but is overwritten
-pict_info_ptr	dw
-.ENDE
-
-
