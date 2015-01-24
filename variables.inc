@@ -10,6 +10,7 @@ Joy2Press	DW		;same thing for all pads...
 ; stage1.inc
 PlayerPosX  DW
 PlayerPosY  DW
+PlayerFaceR DW
 JumpPower   DW
 
 .ENDE

@@ -19,6 +19,8 @@ Stage1:
     sta PlayerPosY
     lda #0
     sta JumpPower
+    lda #1
+    sta PlayerFaceR
 	    
 	sta $210D
 
@@ -58,6 +60,18 @@ InfiniteLoop:
 
 ;====
 MoveCharacter:
+    ; mirror
+    lda PlayerFaceR
+    bne notFacingR
+
+    lda #$40
+	tsb SpriteBuf1+spriority
+	jmp endMirror
+notFacingR:
+    ; forward facing
+    lda #$40
+	trb SpriteBuf1+spriority
+endMirror:
 
 ; Jump button pressed
 	lda JumpPower
@@ -110,9 +124,9 @@ _up:
 
 	lda	CurrentFrame
 	and	#$F0
-	cmp	#192
+	cmp	#128
 	beq	IncrementFrame
-	lda	#192
+	lda	#128
 	sta	CurrentFrame
 	RTS
 
@@ -128,9 +142,9 @@ _down:
 
 	lda	CurrentFrame
 	and	#$F0
-	cmp	#128
+	cmp	#64
 	beq	IncrementFrame
-	lda	#128
+	lda	#64
 	sta	CurrentFrame
 	RTS
 
@@ -159,9 +173,8 @@ _left:
 	and	#$02
 	beq	_right
 
-    ; mirror
-    lda #$40
-	trb SpriteBuf1+spriority
+    lda #0
+    sta PlayerFaceR
 
     ; don't go past left
     lda PlayerPosX
@@ -181,9 +194,9 @@ DontMoveLeft:
 
 	lda	CurrentFrame
 	and	#$F0
-	cmp	#64
+	cmp	#00
 	beq	IncrementFrame
-	lda	#64
+	lda	#00
 	sta	CurrentFrame
 	RTS
 
@@ -192,9 +205,8 @@ _right:
 	and	#$01
 	beq	_standing_still
 
-    ; forward facing
-    lda #$40
-	trb SpriteBuf1+spriority
+    lda #1
+    sta PlayerFaceR
 
     lda PlayerPosX
     cmp #(224 - PlayerSpeed)
