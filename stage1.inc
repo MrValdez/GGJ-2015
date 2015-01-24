@@ -4,6 +4,8 @@
 
 .DEFINE FrameWait		$1C
 
+.DEFINE PlayerPosX  $1D
+
 .BANK 0 SLOT 0
 .SECTION "Stage1" SEMIFREE
 
@@ -16,10 +18,21 @@ Stage1:
 
 	;setup our walking sprite
 	;put him in the center of the screen
-	lda #($80-16) 		
+	;lda #($80-16) 		
+	;sta SpriteBuf1+sx
+	;lda #(224/2-16)
+	;sta SpriteBuf1+sy
+
+    ; place sprite
+    lda #0
+    sta PlayerPosX
+	
+	lda PlayerPosX
 	sta SpriteBuf1+sx
 	lda #(224/2-16)
 	sta SpriteBuf1+sy
+
+	sta $210D
 
 	;put sprite #0 on screen
 	lda #$54
@@ -48,6 +61,12 @@ Stage1:
 
 
 InfiniteLoop:
+    inc PlayerPosX
+	
+	lda PlayerPosX
+	sta SpriteBuf1+sx
+	lda #(224/2-16)
+	sta SpriteBuf1+sy
 
 	WAI
 
@@ -153,16 +172,5 @@ _done:
 
 	
 	JMP InfiniteLoop	;Do this forever
-
-;==========================================================================================
-
-
-;============================================================================
-; SetupVideo -- Set the video mode for the demo
-;----------------------------------------------------------------------------
-; In: None
-;----------------------------------------------------------------------------
-; Out: None
-;----------------------------------------------------------------------------
 
 .ENDS
