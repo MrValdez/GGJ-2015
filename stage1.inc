@@ -26,12 +26,7 @@ Stage1:
     ; place sprite
     lda #0
     sta PlayerPosX
-	
-	lda PlayerPosX
-	sta SpriteBuf1+sx
-	lda #(224/2-16)
-	sta SpriteBuf1+sy
-
+	    
 	sta $210D
 
 	;put sprite #0 on screen
@@ -54,22 +49,29 @@ Stage1:
     sta     $2122
     lda     #%00000000  ; Load the high byte of the green color.
     sta     $2122
-    ;;
     
    lda     #%00001111  ; End VBlank, setting brightness to 15 (100%).
    sta     $2100
 
 
 InfiniteLoop:
-    inc PlayerPosX
+	WAI
+
+	jsr MoveCharacter
+    jsr ButtonCheck
 	
+	JMP InfiniteLoop	;Do this forever
+
+;====
+MoveCharacter:
 	lda PlayerPosX
 	sta SpriteBuf1+sx
 	lda #(224/2-16)
 	sta SpriteBuf1+sy
-
-	WAI
-
+    rts
+    
+;====
+ButtonCheck
 	;See what buttons were pressed
 _up:
 	lda	Joy1+1
@@ -87,7 +89,7 @@ _up:
 	beq	IncrementFrame
 	lda	#$40
 	sta	CurrentFrame
-	bra	_done
+	RTS
 
 _down:
 	lda	Joy1+1
@@ -105,12 +107,18 @@ _down:
 	beq	IncrementFrame
 	lda	#$C0
 	sta	CurrentFrame
-	bra	_done
+	RTS
 
 _left:
 	lda	Joy1+1
 	and	#$02
 	beq	_right
+
+    lda PlayerPosX
+    cmp #$00
+    beq DontMoveLeft
+    dec PlayerPosX
+DontMoveLeft:
 
 	ldx	MapX
 	dex
@@ -123,12 +131,14 @@ _left:
 	beq	IncrementFrame
 	lda	#$80
 	sta	CurrentFrame
-	bra	_done
+	RTS
 
 _right:
 	lda	Joy1+1
 	and	#$01
 	beq	_standing_still
+
+    inc PlayerPosX
 
 	ldx	MapX
 	inx
@@ -141,19 +151,19 @@ _right:
 	beq	IncrementFrame
 	lda	#$00
 	sta	CurrentFrame
-	bra	_done
+	RTS
 
 _standing_still:
 	lda	CurrentFrame
 	and	#$F0
 	sta	CurrentFrame
-	bra	_done
+	RTS
 
 IncrementFrame:
 	inc	FrameWait
 	lda	FrameWait
 	cmp	#$06
-	bne	_done
+	bne _ExitIncrementFrame
 
 	lda	CurrentFrame
 	and	#$F0
@@ -166,11 +176,8 @@ IncrementFrame:
 	sta	CurrentFrame	
 
 	stz	FrameWait
-	bra	_done
+_ExitIncrementFrame:
+	RTS
 
-_done:
-
-	
-	JMP InfiniteLoop	;Do this forever
-
+    
 .ENDS
