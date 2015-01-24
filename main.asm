@@ -5,10 +5,13 @@
 .INCLUDE "common/LoadGraphics.asm"
 .INCLUDE "common/2Input.asm"
 .INCLUDE "common/Strings.asm"
-.INCLUDE "common/QuickSetup.asm"
+.INCLUDE "common/Sprites.asm"
 
+.INCLUDE "CharacterData.inc"
 .INCLUDE "images.inc"
 .INCLUDE "title.inc"
+.INCLUDE "stage1.inc"
+.INCLUDE "common/QuickSetup.asm"
 
 ;=== Global Variables ===
 
@@ -42,19 +45,20 @@ Main:
     PrintString "\n\n"
 
 ; green background
-    sep #$20
-    lda #%10000000
-    sta $2100
+;    sep #$20
+;    lda #%10000000
+;    sta $2100
     
-    lda     #%11100000  ; Load the low byte of the green color.
-    sta     $2122
-    lda     #%00000000  ; Load the high byte of the green color.
-    sta     $2122
+;    lda     #%11100000  ; Load the low byte of the green color.
+;    sta     $2122
+;    lda     #%00000000  ; Load the high byte of the green color.
+;    sta     $2122
 
-   lda     #%00001111  ; End VBlank, setting brightness to 15 (100%).
-   sta     $2100
+;   lda     #%00001111  ; End VBlank, setting brightness to 15 (100%).
+;   sta     $2100
 
-    jsr TitleScreen
+    ;jsr TitleScreen
+    jsr Stage1
 
 forever:
     jmp forever    
