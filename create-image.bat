@@ -10,7 +10,7 @@ rem pcx2snes cutewendy1 -screen
 
 
 pcx2snes hero -c16 -o128
-pcx2snes hero2 -c16 -o128
+pcx2snes bullets -c16 -o128
 
 rem pcx2snes title -screen
 

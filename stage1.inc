@@ -11,6 +11,8 @@
 .BANK 0 SLOT 0
 .SECTION "Stage1" SEMIFREE
 
+.include "shots.inc"
+
 Stage1:	
     ; initialize variables
     lda #0
@@ -55,6 +57,8 @@ InfiniteLoop:
 
 	jsr MoveCharacter
     jsr ButtonCheck
+
+    jsr UpdateShots
 	
 	JMP InfiniteLoop	;Do this forever
 
@@ -119,7 +123,7 @@ ButtonCheck
 	;See what buttons were pressed
 _AButton:
     lda	Joy1+1
-	and	#$F0
+	and	#$80
 	beq	_down
 
 	ldx	MapY

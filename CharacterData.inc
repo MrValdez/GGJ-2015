@@ -11,7 +11,7 @@ BG_Palette:
 	.INCBIN ".\\images\\mymap.clr"
 ;	.INCBIN ".\\images\\dwarf.clr"
 	.INCBIN ".\\images\\hero.clr"
-	.INCBIN ".\\images\\hero2.clr"
+	.INCBIN ".\\images\\bullets.clr"
 
 	.INCBIN ".\\Images\\ascii.clr"
 	;.REPT 128
@@ -21,7 +21,7 @@ BG_Palette:
 SpriteTiles:
 ;	.INCBIN ".\\images\\dwarf.pic"
 	.INCBIN ".\\images\\hero.pic"
-	.INCBIN ".\\images\\hero2.pic"
+	.INCBIN ".\\images\\bullets.pic"
 
 ASCIITiles:
 	.INCBIN ".\\images\\ascii.pic"
