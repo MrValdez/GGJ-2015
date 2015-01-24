@@ -27,8 +27,9 @@ Stage1:
 	sta SpriteBuf2
 
 	;set the sprite to the highest priority
-	lda #$30			
-	sta SpriteBuf1+spriority
+    ;lda #%01110000
+    lda #$30
+    sta SpriteBuf1+spriority
 
 	;setup the video modes and such, then turn on the screen
 	JSR SetupVideo	
@@ -158,6 +159,10 @@ _left:
 	and	#$02
 	beq	_right
 
+    ; mirror
+    lda #$40
+	trb SpriteBuf1+spriority
+
     ; don't go past left
     lda PlayerPosX
     cmp #PlayerSpeed
@@ -186,6 +191,10 @@ _right:
 	lda	Joy1+1
 	and	#$01
 	beq	_standing_still
+
+    ; forward facing
+    lda #$40
+	trb SpriteBuf1+spriority
 
     lda PlayerPosX
     cmp #(224 - PlayerSpeed)

@@ -27,3 +27,12 @@ ASCIITiles:
 	.INCBIN ".\\images\\ascii.pic"
 
 .ENDS
+
+.BANK 4 SLOT 0
+.ORG 0
+.SECTION "BG_CharacterData"
+
+;character data
+BackgroundPics:
+	.INCBIN ".\\images\\mymap.pic"
+.ENDS

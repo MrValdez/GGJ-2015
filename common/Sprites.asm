@@ -5,9 +5,8 @@
 ;------------------------------------------------------------------------
 
 ;temporary sprite buffer1 ($0400-$061F)
-.DEFINE SpriteBuf1	$0400
-.DEFINE SpriteBuf2	$0600
-
+.DEFINE SpriteBuf1	$0400 
+.DEFINE SpriteBuf2	$0600 
 
 .DEFINE sx	   		0
 .DEFINE sy	   		1
@@ -33,5 +32,6 @@ _clr:
 
 	plp
 	rts
+
 .ENDS
 ;==========================================================================================
