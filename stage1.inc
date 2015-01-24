@@ -6,24 +6,12 @@
 
 .DEFINE GravityStrength  3
 .DEFINE JumpStrength     8
+.DEFINE PlayerSpeed      3
 
 .BANK 0 SLOT 0
 .SECTION "Stage1" SEMIFREE
 
 Stage1:	
-	;         ---12345678901234567890123456789012---
-	PrintString " 'Look Ma, I can Walk!' \n"
-	PrintString "   Tile pics: from Darrok \n"
-	PrintString "   Walker pics: from a Demo ROM\n"
-	PrintString "     - coded by: Neviksti -  "
-
-	;setup our walking sprite
-	;put him in the center of the screen
-	;lda #($80-16) 		
-	;sta SpriteBuf1+sx
-	;lda #(224/2-16)
-	;sta SpriteBuf1+sy
-
     ; initialize variables
     lda #0
     sta PlayerPosX
@@ -150,10 +138,15 @@ _left:
 	and	#$02
 	beq	_right
 
+    ; don't go past left
     lda PlayerPosX
-    cmp #$00
+    cmp #PlayerSpeed
     beq DontMoveLeft
-    dec PlayerPosX
+    bcc DontMoveLeft
+
+    lda PlayerPosX
+	sbc #PlayerSpeed
+	sta PlayerPosX
 DontMoveLeft:
 
 	ldx	MapX
@@ -174,7 +167,15 @@ _right:
 	and	#$01
 	beq	_standing_still
 
-    inc PlayerPosX
+    lda PlayerPosX
+    cmp #(224 - PlayerSpeed)
+    beq DontMoveRight
+    bcs DontMoveRight
+
+    lda PlayerPosX
+	adc #PlayerSpeed
+	sta PlayerPosX
+DontMoveRight:
 
 	ldx	MapX
 	inx
