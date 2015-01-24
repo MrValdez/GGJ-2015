@@ -94,13 +94,9 @@ QuickSetup:
 
 	;Load Tile and Character data to VRAM
     LoadBlockToVRAM	ASCIITiles, $5000, $0800	;128 tiles * (2bit color = 2 planes) --> 2048 bytes
-
-	;Load palette to make our pictures look correct
-	LoadPalette	BG_Palette
-
-	;Load Tile and Character data to VRAM
-	LoadBlockToVRAM	SpriteTiles, $6000, $2000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes
-    
+	;LoadBlockToVRAM	SpriteTiles, $6000, $2000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes ((16*32*32)/2)
+	LoadBlockToVRAM	SpriteTiles, $6000, $4000	;32 32x32 tiles * (4bit color = 4 planes) --> 16384 bytes
+	
 	;Set the priority bit of all the BG2 tiles
 	LDA #$80
 	STA $2115		;set up the VRAM so we can write just to the high byte

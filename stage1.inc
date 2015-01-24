@@ -109,9 +109,9 @@ _up:
 
 	lda	CurrentFrame
 	and	#$F0
-	cmp	#$40
+	cmp	#192
 	beq	IncrementFrame
-	lda	#$40
+	lda	#192
 	sta	CurrentFrame
 	RTS
 
@@ -127,10 +127,30 @@ _down:
 
 	lda	CurrentFrame
 	and	#$F0
-	cmp	#$C0
+	cmp	#128
 	beq	IncrementFrame
-	lda	#$C0
+	lda	#128
 	sta	CurrentFrame
+	RTS
+
+IncrementFrame:
+	inc	FrameWait
+	lda	FrameWait
+	cmp	#$06
+	bne _ExitIncrementFrame
+
+	lda	CurrentFrame
+	and	#$F0
+	sta	FrameWait
+	lda	CurrentFrame
+	clc
+	adc	#$04
+	and	#$0C
+	adc	FrameWait
+	sta	CurrentFrame	
+
+	stz	FrameWait
+_ExitIncrementFrame:
 	RTS
 
 _left:
@@ -156,9 +176,9 @@ DontMoveLeft:
 
 	lda	CurrentFrame
 	and	#$F0
-	cmp	#$80
+	cmp	#64
 	beq	IncrementFrame
-	lda	#$80
+	lda	#64
 	sta	CurrentFrame
 	RTS
 
@@ -195,26 +215,5 @@ _standing_still:
 	and	#$F0
 	sta	CurrentFrame
 	RTS
-
-IncrementFrame:
-	inc	FrameWait
-	lda	FrameWait
-	cmp	#$06
-	bne _ExitIncrementFrame
-
-	lda	CurrentFrame
-	and	#$F0
-	sta	FrameWait
-	lda	CurrentFrame
-	clc
-	adc	#$04
-	and	#$0C
-	adc	FrameWait
-	sta	CurrentFrame	
-
-	stz	FrameWait
-_ExitIncrementFrame:
-	RTS
-
     
 .ENDS
