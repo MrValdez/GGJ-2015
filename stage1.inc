@@ -4,7 +4,8 @@
 
 .DEFINE FrameWait		$1C
 
-.DEFINE PlayerPosX  $1D
+.DEFINE GravityStrength  3
+.DEFINE JumpStrength     8
 
 .BANK 0 SLOT 0
 .SECTION "Stage1" SEMIFREE
@@ -23,9 +24,13 @@ Stage1:
 	;lda #(224/2-16)
 	;sta SpriteBuf1+sy
 
-    ; place sprite
+    ; initialize variables
     lda #0
     sta PlayerPosX
+    lda #1
+    sta PlayerPosY
+    lda #0
+    sta JumpPower
 	    
 	sta $210D
 
@@ -64,9 +69,37 @@ InfiniteLoop:
 
 ;====
 MoveCharacter:
+
+; Jump button pressed
+	lda JumpPower
+	cmp #$00
+	beq noJump
+	lda PlayerPosY
+	cmp #$10
+	bcc noJump          ; don't jump if we are near the ceiling
+	sbc JumpPower
+	sta PlayerPosY
+	dec JumpPower
+noJump:	
+
+; collision against ceiling
+; Gravity
+    ldy #JumpPower
+
+	lda PlayerPosY
+	cmp #170        ; Check if we hit floor
+	bcs noFall
+Fallnow:		
+	lda PlayerPosY
+	adc #GravityStrength
+	sta PlayerPosY
+	;inc PlayerPosY  ; normal gravity
+    
+noFall:
+	
 	lda PlayerPosX
 	sta SpriteBuf1+sx
-	lda #(224/2-16)
+	lda PlayerPosY
 	sta SpriteBuf1+sy
     rts
     
@@ -82,6 +115,9 @@ _up:
 	dex
 	dex
 	stx	MapY
+	
+	lda #JumpStrength
+	sta JumpPower
 
 	lda	CurrentFrame
 	and	#$F0

@@ -1,6 +1,7 @@
 .INCLUDE "Hello.inc"
 
 ;=== Include Library Routines & Macros ===
+.INCLUDE "variables.inc"
 .INCLUDE "common/InitSNES.asm"
 .INCLUDE "common/LoadGraphics.asm"
 .INCLUDE "common/2Input.asm"
