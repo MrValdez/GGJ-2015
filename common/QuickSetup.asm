@@ -93,51 +93,87 @@ QuickSetup:
 	LoadPalette	BG_Palette
 
 	;Load Tile and Character data to VRAM
-	LoadBlockToVRAM	ASCIITiles, $0000, $0800	;128 tiles * (2bit color = 2 planes) --> 2048 bytes
+    LoadBlockToVRAM	ASCIITiles, $5000, $0800	;128 tiles * (2bit color = 2 planes) --> 2048 bytes
 
-	;Set the priority bit of all the BG3 tiles
+	;Load palette to make our pictures look correct
+	LoadPalette	BG_Palette
+
+	;Load Tile and Character data to VRAM
+	LoadBlockToVRAM	SpriteTiles, $6000, $2000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes
+    
+	;Set the priority bit of all the BG2 tiles
 	LDA #$80
 	STA $2115		;set up the VRAM so we can write just to the high byte
-	LDX #$0400
+	LDX #$5800
 	STX $2116
 	LDX #$0400		;32x32 tiles = 1024
 	LDA #$20
-__next_tile:
-	STA $2119
+Next_tile:
+	STA	 $2119
 	DEX
-	BNE __next_tile
-
+	BNE Next_tile
+	
+	PLP
+	RTS
     
-	lda #$01		;Set video mode 1, 8x8 tiles (16 color BG1 + BG2, 4 color BG3)
+SetupVideo:    
+    php
+	rep #$10		;A/mem = 8bit, X/Y=16bit
+	sep #$20
+      
+	lda #$A3		;Sprites 32x32 or 64x64, character data at $6000 (word address)
+      sta $2101         
+
+	lda #$04		;Set video mode 4, 8x8 tiles (256 color BG1, 4 color BG2)
+      sta $2105         
+
+	lda #$03		;Set BG1's Tile Map VRAM offset to $0000 (word address)
+      sta $2107		;   and the Tile Map size to 64 tiles x 64 tiles
+
+	lda #$52		;Set BG1's Character VRAM offset to $2000 (word address)
+      sta $210B		;Set BG2's Character VRAM offset to $5000 (word address)
+
+	lda #$58		;Set BG2's Tile Map VRAM offset to $5800 (word address)
+      sta $2108		;   and the Tile Map size to 32 tiles x 32 tiles
+
+	lda #$13		;Turn on BG1 and BG2 and Sprites
+      sta $212C
+
+      lda #$0F		;Turn on screen, full brightness
+      sta $2100		
+
+	lda #$FF		;Scroll BG2 down 1 pixel
+	sta $2110
+	sta $2110         
+
+	plp
+	rts
+	
+SetupCutscene:    
+; Same as above but for Title Screen
+; - I couldn't figure the difference between the two. Perhaps memory address used? -MrValdez
+	php
+
+	rep #$10		;A/mem = 8bit, X/Y=16bit
+	sep #$20
+      
+	lda #$03		;Set video mode 3, 8x8 tiles (256 color BG1, 16 color BG2)
       sta $2105         
 
 	lda #$08		;Set BG1's Tile Map VRAM offset to $0800 (word address)
       sta $2107		;   and the Tile Map size to 32 tiles x 32 tiles
 
-	lda #$0C		;Set BG2's Tile Map VRAM offset to $0C00 (word address)
-      sta $2108		;   and the Tile Map size to 32 tiles x 32 tiles
+	lda #$21		;Set BG1's Character VRAM offset to $1000 (word address)
+      sta $210B		;Set BG2's Character VRAM offset to $2000 (word address)
 
-	lda #$04		;Set BG3's Tile Map VRAM offset to $0400 (word address)
-      sta $2109		;   and the Tile Map size to 32 tiles x 32 tiles
-
-	lda #$41		;Set BG1's Character VRAM offset to $1000 (word address)
-      sta $210B		;Set BG2's Character VRAM offset to $4000 (word address)
-
-	lda #$00		;Set BG3's Character VRAM offset to $0000 (word address)
-      sta $210C		;
-
-
-	lda #$07		;Turn on BG1 and BG2 and BG3
+	lda #$01		;Turn on BG1
       sta $212C
 
-	lda #$FF		;Scroll BG3 down 1 pixel
-	sta $2112
-	sta $2112         
-
-      lda #$0F		;Turn on screen, full brightness
-      sta $2100		
+	lda #$FF		;Scroll BG1 down 1 pixel
+	sta $210E
+	sta $210E
 
 	plp
 	rts
-
+	
 .ENDS

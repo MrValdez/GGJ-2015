@@ -37,7 +37,8 @@ Main:
     jsr QuickSetup	; set VRAM, the video mode, background and character pointers, 
                     ; and turn on the screen
 
-    jsr JoyInit		;setup joypads and enable NMI
+    JSR SpriteInit	;setup the sprite buffer
+	JSR JoyInit		;setup joypads and enable NMI
 
 ;initialize:
 
@@ -57,6 +58,8 @@ Main:
 ;   lda     #%00001111  ; End VBlank, setting brightness to 15 (100%).
 ;   sta     $2100
 
+	JSR SetupVideo	
+    
     ;jsr TitleScreen
     jsr Stage1
 

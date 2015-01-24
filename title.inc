@@ -2,6 +2,8 @@
 .SECTION "title" SEMIFREE
 
 TitleScreen:
+    jsr SetupCutscene
+
 start_show:
 	lda.w num_pictures
 	sta pics_remaining
@@ -10,7 +12,7 @@ start_show:
 
 next_picture:
 	jsr DisplayPicture	
-
+    
 	rep #$20		; A/mem = 16 bits
 
 	;move x to point to the next 'info structure pointer'

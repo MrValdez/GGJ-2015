@@ -7,28 +7,7 @@
 .BANK 0 SLOT 0
 .SECTION "Stage1" SEMIFREE
 
-Stage1:
-	;Load palette to make our pictures look correct
-	LoadPalette	BG_Palette
-
-	;Load Tile and Character data to VRAM
-	LoadBlockToVRAM	SpriteTiles, $6000, $2000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes
-    
-	;Set the priority bit of all the BG2 tiles
-	LDA #$80
-	STA $2115		;set up the VRAM so we can write just to the high byte
-	LDX #$5800
-	STX $2116
-	LDX #$0400		;32x32 tiles = 1024
-	LDA #$20
-Next_tile:
-	STA $2119
-	DEX
-	BNE Next_tile
-	
-	JSR SpriteInit	;setup the sprite buffer
-	JSR JoyInit		;setup joypads and enable NMI
-
+Stage1:	
 	;         ---12345678901234567890123456789012---
 	PrintString " 'Look Ma, I can Walk!' \n"
 	PrintString "   Tile pics: from Darrok \n"
@@ -52,6 +31,21 @@ Next_tile:
 
 	;setup the video modes and such, then turn on the screen
 	JSR SetupVideo	
+
+    ; Green Color
+    sep #$20
+    lda #%10000000
+    sta $2100
+    
+    lda     #%11100000  ; Load the low byte of the green color.
+    sta     $2122
+    lda     #%00000000  ; Load the high byte of the green color.
+    sta     $2122
+    ;;
+    
+   lda     #%00001111  ; End VBlank, setting brightness to 15 (100%).
+   sta     $2100
+
 
 InfiniteLoop:
 
@@ -170,39 +164,5 @@ _done:
 ;----------------------------------------------------------------------------
 ; Out: None
 ;----------------------------------------------------------------------------
-SetupVideo:
-	php
-
-	rep #$10		;A/mem = 8bit, X/Y=16bit
-	sep #$20
-      
-	lda #$A3		;Sprites 32x32 or 64x64, character data at $6000 (word address)
-      sta $2101         
-
-	lda #$04		;Set video mode 4, 8x8 tiles (256 color BG1, 4 color BG2)
-      sta $2105         
-
-	lda #$03		;Set BG1's Tile Map VRAM offset to $0000 (word address)
-      sta $2107		;   and the Tile Map size to 64 tiles x 64 tiles
-
-	lda #$52		;Set BG1's Character VRAM offset to $2000 (word address)
-      sta $210B		;Set BG2's Character VRAM offset to $5000 (word address)
-
-	lda #$58		;Set BG2's Tile Map VRAM offset to $5800 (word address)
-      sta $2108		;   and the Tile Map size to 32 tiles x 32 tiles
-
-	lda #$13		;Turn on BG1 and BG2 and Sprites
-      sta $212C
-
-      lda #$0F		;Turn on screen, full brightness
-      sta $2100		
-
-	lda #$FF		;Scroll BG2 down 1 pixel
-	sta $2110
-	sta $2110         
-
-	plp
-	rts
-
 
 .ENDS
