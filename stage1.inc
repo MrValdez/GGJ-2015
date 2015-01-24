@@ -73,7 +73,7 @@ notFacingR:
 	trb SpriteBuf1+spriority
 endMirror:
 
-; Jump button pressed
+; Check if we are jumping
 	lda JumpPower
 	cmp #$00
 	beq noJump
@@ -87,16 +87,24 @@ noJump:
 
 ; collision against ceiling
 ; Gravity
-    ldy #JumpPower
 
 	lda PlayerPosY
 	cmp #170        ; Check if we hit floor
 	bcs noFall
 Fallnow:		
+
+	jsr IncrementFrame
+	lda	CurrentFrame
+	and	#$F0
+	cmp	#$40
+	beq	exitFallAnim
+	lda	#$40
+	sta	CurrentFrame
+exitFallAnim:
+
 	lda PlayerPosY
 	adc #GravityStrength
 	sta PlayerPosY
-	;inc PlayerPosY  ; normal gravity
     
 noFall:
 	
@@ -109,9 +117,9 @@ noFall:
 ;====
 ButtonCheck
 	;See what buttons were pressed
-_up:
-	lda	Joy1+1
-	and	#$08
+_AButton:
+    lda	Joy1+1
+	and	#$F0
 	beq	_down
 
 	ldx	MapY
@@ -124,9 +132,9 @@ _up:
 
 	lda	CurrentFrame
 	and	#$F0
-	cmp	#128
+	cmp	#$80
 	beq	IncrementFrame
-	lda	#128
+	lda	#$80
 	sta	CurrentFrame
 	RTS
 
@@ -140,12 +148,6 @@ _down:
 	inx
 	stx	MapY
 
-	lda	CurrentFrame
-	and	#$F0
-	cmp	#64
-	beq	IncrementFrame
-	lda	#64
-	sta	CurrentFrame
 	RTS
 
 IncrementFrame:
