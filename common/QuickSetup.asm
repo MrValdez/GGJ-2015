@@ -10,6 +10,7 @@
 
 .DEFINE FrameNum $12		
 
+
 VBlank:
 	rep #$30		;A/Mem=16bits, X/Y=16bits
 	phb
@@ -64,6 +65,7 @@ VBlank:
 	sta $210E
 	lda MapY+1
 	sta $210E
+
 
 	;update the joypad data
 	JSR GetInput

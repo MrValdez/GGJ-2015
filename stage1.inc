@@ -17,7 +17,7 @@ Stage1:
     ; initialize variables
     lda #0
     sta PlayerPosX
-    lda #1
+    lda #50
     sta PlayerPosY
     lda #0
     sta JumpPower
@@ -41,13 +41,8 @@ Stage1:
 
     ; Green Color
     sep #$20
-    lda #%10000000
+    lda #%00000011
     sta $2100
-    
-    lda     #%11100000  ; Load the low byte of the green color.
-    sta     $2122
-    lda     #%00000000  ; Load the high byte of the green color.
-    sta     $2122
     
    lda     #%00001111  ; End VBlank, setting brightness to 15 (100%).
    sta     $2100
@@ -60,6 +55,7 @@ InfiniteLoop:
     jsr ButtonCheck
 
     jsr UpdateShots
+
 	
 	JMP InfiniteLoop	;Do this forever
 
@@ -97,7 +93,6 @@ noJump:
 	cmp #170        ; Check if we hit floor
 	bcs noFall
 Fallnow:		
-
 	jsr IncrementFrame
 	lda	CurrentFrame
 	and	#$F0
@@ -134,10 +129,10 @@ _AButton:
 	and	#$80
 	beq	_down
 
-;	ldx	MapY
-;	dex
-;	dex
-;	stx	MapY
+	ldx	MapY
+;	inx
+;	inx
+	stx	MapY
 	
 	lda #JumpStrength
 	sta JumpPower
@@ -151,13 +146,15 @@ _AButton:
 	RTS
 
 _down:
+    jsr CheckCollision
+
 	lda	Joy1+1
 	and	#$04
 	beq	_left
 
 	ldx	MapY
-	inx
-	inx
+	dex
+	dex
 	stx	MapY
 
 	RTS
@@ -251,4 +248,40 @@ _standing_still:
 	sta	CurrentFrame
 	RTS
     
+CheckCollision:
+	SetCursorPos 20, 1
+	ldy #JumpPower
+	PrintString "play pos= %d    "
+
+    lda JumpPower
+    cmp #0
+	bcc exitCheckCollision
+	lda PlayerPosY
+	cmp #115
+	bcc exitCheckCollision
+	lda PlayerPosX
+	cmp #90
+	bcc exitCheckCollision
+	cmp #168
+	bcs exitCheckCollision
+
+	; pushback
+	lda JumpPower
+	adc #9
+	sta JumpPower
+
+    lda PlayerFaceR
+    bne PushbackR
+
+	lda PlayerPosX
+	adc #15
+	sta PlayerPosX
+	jmp exitCheckCollision
+PushbackR:	
+	lda PlayerPosX
+	sbc #15
+	sta PlayerPosX	
+	
+exitCheckCollision:
+    RTS
 .ENDS

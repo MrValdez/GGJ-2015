@@ -39,7 +39,7 @@ SpriteBullets:
 
 .ENDS
 
-.BANK 5 SLOT 0
+.BANK 4 SLOT 0
 .ORG 0
 .SECTION "BG_CharacterData"
 

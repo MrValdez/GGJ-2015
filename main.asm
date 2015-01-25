@@ -45,6 +45,11 @@ Main:
 
     PrintString "\n Hello World!!"
     PrintString "\n\n"
+    ; Blue Background
+    stz $2121
+    lda #$40
+    sta $2122
+    sta $2122
 
 ; green background
 ;    sep #$20
