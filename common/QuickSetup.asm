@@ -24,7 +24,7 @@ VBlank:
 
 	stz $2102		; set OAM address to 0
 	stz $2103
-
+	
 	LDY #$0400
 	STY $4300		; CPU -> PPU, auto increment, write 1 reg, $2104 (OAM data write)
 	LDY #$0400
@@ -96,8 +96,9 @@ QuickSetup:
 	LoadBlockToVRAM	BackgroundMap, $0000, $2000	; 64x64 tiles = 4096 words = 8192 bytes
 	LoadBlockToVRAM	BackgroundPics, $2000, $6000	; 384 tiles * (8bit color)= 0x6000 bytes
     LoadBlockToVRAM	ASCIITiles, $5000, $0800	;128 tiles * (2bit color = 2 planes) --> 2048 bytes
-	;LoadBlockToVRAM	SpriteTiles, $6000, $2000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes ((16*32*32)/2)
-	LoadBlockToVRAM	SpriteTiles, $6000, $4000	;32 32x32 tiles * (4bit color = 4 planes) --> 16384 bytes
+	;LoadBlockToVRAM	SpriteBullets, $8000, $2000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes ((16*32*32)/2)
+	LoadBlockToVRAM	SpriteTiles, $6000, $2000	;16 32x32 tiles * (4bit color = 4 planes) --> 8192 bytes ((16*32*32)/2)
+	;LoadBlockToVRAM	SpriteTiles, $6000, $4000	;32 32x32 tiles * (4bit color = 4 planes) --> 16384 bytes
 	
 	;Set the priority bit of all the BG2 tiles
 	LDA #$80

@@ -14,8 +14,38 @@
 .EQU Button_Left	$02
 .EQU Button_Right	$01
 
+; next struct
+.DEFINE a1	$0400 + $8
+.DEFINE a2	a1 + $200 
+
 UpdateShots:
-	;See what buttons were pressed
+    RTS
+	lda #(256/2 - 16)
+    sta a1 + sx          ; Sprite X-Coordinate
+
+    lda #(224/2 - 16)   ; Sprite Y-Coordinate
+    sta a1 + sy
+	
+    lda %#0101 0100
+	sta a2
+
+	;set the sprite to the highest priority
+    ;lda #%01110000
+    lda #$30
+    sta a1+spriority
+ 
+	;lda	#($40 + $10)
+	;lda	#$c0
+	;lda	#($e0 + $12)
+	;ldx	#$100
+	;lda #$04   ;one frame = 4bytes
+	;lda #$c0
+	;ldx #($40 + $40 + $40 + $40 + $40)
+	ldx #$100
+	
+	sta	a1+sframe
+
+
 _BButton:
     lda	Joy1+1
 	and	#Button_Y
@@ -26,5 +56,14 @@ _BButton:
 	dex
 	stx	MapY
 	
+	;put sprite #0 on screen
+	lda #$54
+	sta SpriteBuf2 + 100
+
+	;set the sprite to the highest priority
+    ;lda #%01110000
+    lda #$30
+    sta SpriteBuf1+spriority  + 100
+
 _BButtonExit:
 	RTS

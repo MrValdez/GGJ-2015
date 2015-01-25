@@ -24,10 +24,11 @@ Stage1:
     lda #1
     sta PlayerFaceR
 	    
-	sta $210D
+;???	sta $210D
 
 	;put sprite #0 on screen
-	lda #$54
+	;lda #$54
+	lda %#0101 0100
 	sta SpriteBuf2
 
 	;set the sprite to the highest priority
@@ -100,9 +101,16 @@ Fallnow:
 	jsr IncrementFrame
 	lda	CurrentFrame
 	and	#$F0
-	cmp	#$40
+;	cmp	#$40
+;	beq	exitFallAnim
+;	lda	#$40
+
+;experiment
+	cmp	#$A0
 	beq	exitFallAnim
-	lda	#$40
+	lda	#$C0
+;experiment
+
 	sta	CurrentFrame
 exitFallAnim:
 

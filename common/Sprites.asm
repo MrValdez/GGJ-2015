@@ -11,7 +11,7 @@
 .DEFINE sx	   		0
 .DEFINE sy	   		1
 .DEFINE sframe 		2
-.DEFINE spriority		3
+.DEFINE spriority	3
 
 .BANK 0
 .SECTION "SpriteInit"
