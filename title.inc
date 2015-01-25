@@ -4,6 +4,19 @@
 TitleScreen:
     jsr SetupCutscene
 
+    lda 0
+    sta cheat1
+    sta cheat2
+    sta cheat3
+    sta cheat4
+    sta cheat5
+    sta cheat6
+    sta cheat7
+    sta cheat8
+    sta cheat9
+    sta cheat10
+    sta cheat11
+
 start_show:
 	lda.w num_pictures
 	sta pics_remaining
@@ -28,16 +41,32 @@ next_picture:
 
 	;wait for button press	
 no_button:
-	lda	Joy1Press
-	and	#$F0
-	bne	button_pressed
-	lda	Joy1Press+1
+	;lda	Joy1Press
+	;and	#$F0    ; press any key
+	
+	jsr cheatcode
+
+    lda currentStage
+    cmp 1
+    bne juststart
+    rts
+
+juststart:	
+	
+	lda	Joy1+1
+	and #$10        ; press start
 	beq	no_button
 button_pressed:
+    lda 1
+    sta currentStage
+    rts
 
-	dec pics_remaining
-	bne next_picture
-	bra start_show 
+;	dec pics_remaining
+;	bne next_picture
+;	bra start_show 
+
+
+
 DisplayPicture:
       lda #$8F		;Turn off screen (force blank)
       sta $2100		
@@ -82,6 +111,149 @@ DisplayPicture:
       sta $2100		
 
 	rts
+
+cheatcode:
+	;; cheat up
+	lda cheat1
+	cmp 0
+	beq code1
+
+	lda cheat2
+	cmp 0
+	beq code2
+
+	lda cheat3
+	cmp 0
+	beq code3
+
+	lda cheat4
+	cmp 0
+	beq code4
+
+	lda cheat5
+	cmp 0
+	beq code5
+
+    jsr cheatcode2
+    	
+code1:
+	lda	Joy1+1
+	and #$08
+	beq code2
+	lda 1
+	sta cheat1
+	rts
+	
+code2:
+	lda	Joy1+1
+	and #$08
+	beq code3
+	lda 1
+	sta cheat2
+    rts
+
+code3:
+	lda	Joy1+1
+	and #$04
+	beq code4
+	lda 1
+	sta cheat3
+    rts
+
+code4:
+	lda	Joy1+1
+	and #$04
+	beq code5
+	lda 1
+	sta cheat4
+    rts
+
+code5:
+	lda	Joy1+1
+	and #$02
+	beq cheatcode2
+	lda 1
+	sta cheat6
+    rts
+
+cheatcode2:
+	lda cheat6
+	cmp 0
+	beq code6
+
+	lda cheat7
+	cmp 0
+	beq code7
+
+	lda cheat8
+	cmp 0
+	beq code8
+
+	lda cheat9
+	cmp 0
+	beq code9
+
+	lda cheat10
+	cmp 0
+	beq code10
+
+	lda cheat11
+	cmp 0
+	beq code11
+	rts
+
+code6:
+    rts
+	lda	Joy1+1
+	and #$01
+	beq code7
+	lda 1
+	sta cheat6
+    rts
+
+code7:
+	lda	Joy1+1
+	and #$02
+	beq code8
+	lda 1
+	sta cheat6
+    rts
+
+code8:
+	lda	Joy1+1
+	and #$01
+	beq code9
+	lda 1
+	sta cheat7
+    rts
+
+code9:
+	lda	Joy1+1
+	and #$80
+	beq code10
+	lda 1
+	sta cheat8
+    rts
+code10:
+	lda	Joy1+1
+	and #$40
+	beq code11
+	lda 1
+	sta cheat9
+    rts
+code11:
+	lda 1
+	sta cheat10
+
+    lda 1
+    sta currentStage
+    rts
+    
+;	dec pics_remaining
+;	jsr next_picture
+;	jsr start_show 
+	;; cheat
+	rts
 .ENDS
     
     IncludePicture title
@@ -97,5 +269,6 @@ num_pictures:
 
 picture_list:
 	IncludePictInfo title
+
 	
 .ENDS

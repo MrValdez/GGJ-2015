@@ -15,4 +15,20 @@ JumpPower   DW
 
 PalNum      DW
 
+currentStage DW
+
+;title
+
+cheat1  DW ; up
+cheat2  DW ; up
+cheat3  DW ; dn
+cheat4  DW ; dn
+cheat5  DW ; left
+cheat6  DW ; right
+cheat7  DW ; left
+cheat8  DW ; right
+cheat9  DW ; b
+cheat10 DW ; a
+cheat11 DW ; start
+
 .ENDE

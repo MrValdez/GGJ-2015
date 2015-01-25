@@ -42,9 +42,11 @@ Main:
 	JSR JoyInit		;setup joypads and enable NMI
 
 ;initialize:
+    lda 0
+    sta currentStage
 
-    PrintString "\n Hello World!!"
-    PrintString "\n\n"
+;    PrintString "\n Hello World!!"
+;    PrintString "\n\n"
     ; Blue Background
     stz $2121
     lda #$40
@@ -65,8 +67,11 @@ Main:
 ;   sta     $2100
 
 	JSR SetupVideo	
-    
-    ;jsr TitleScreen
+        
+    jsr TitleScreen
+
+    jsr QuickSetup	; resetup
+
     jsr Stage1
 
 forever:
