@@ -133,10 +133,10 @@ _AButton:
 	and	#$80
 	beq	_down
 
-	ldx	MapY
+;	ldx	MapY
 ;	inx
 ;	inx
-	stx	MapY
+;	stx	MapY
 	
 	lda #JumpStrength
 	sta JumpPower
@@ -157,8 +157,8 @@ _down:
 	beq	_left
 
 	ldx	MapY
-	dex
-	dex
+;	dex
+;	dex
 	stx	MapY
 
 	RTS
