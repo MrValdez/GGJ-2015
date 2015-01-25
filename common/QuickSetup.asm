@@ -66,6 +66,11 @@ VBlank:
 	lda MapY+1
 	sta $210E
 
+    stz $2121
+    lda PalNum
+    sta $2122
+    sta $2122
+
 
 	;update the joypad data
 	JSR GetInput

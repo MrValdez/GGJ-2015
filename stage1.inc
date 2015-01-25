@@ -23,6 +23,10 @@ Stage1:
     sta JumpPower
     lda #1
     sta PlayerFaceR
+    
+    lda $0000
+    sta PalNum
+
 	    
 ;???	sta $210D
 
@@ -249,10 +253,6 @@ _standing_still:
 	RTS
     
 CheckCollision:
-	SetCursorPos 20, 1
-	ldy #JumpPower
-	PrintString "play pos= %d    "
-
     lda JumpPower
     cmp #0
 	bcc exitCheckCollision
@@ -280,7 +280,7 @@ CheckCollision:
 PushbackR:	
 	lda PlayerPosX
 	sbc #15
-	sta PlayerPosX	
+	sta PlayerPosX	        
 	
 exitCheckCollision:
     RTS

@@ -13,5 +13,6 @@ PlayerPosY  DW
 PlayerFaceR DW
 JumpPower   DW
 
-.ENDE
+PalNum      DW
 
+.ENDE
