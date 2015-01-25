@@ -4,11 +4,11 @@
 
 ;Map data
 BackgroundMap:
-	.INCBIN ".\\images\\mymap.map"
+	.INCBIN ".\\images\\boss.map"
 
 ;Color data
 BG_Palette:
-	.INCBIN ".\\images\\mymap.clr"
+	.INCBIN ".\\images\\boss.clr"
 ;	.INCBIN ".\\images\\dwarf.clr"
 	.INCBIN ".\\images\\hero.clr"
 ;	.INCBIN ".\\images\\bullets.clr"
@@ -39,11 +39,11 @@ SpriteBullets:
 
 .ENDS
 
-.BANK 4 SLOT 0
+.BANK 5 SLOT 0
 .ORG 0
 .SECTION "BG_CharacterData"
 
 ;character data
 BackgroundPics:
-	.INCBIN ".\\images\\mymap.pic"
+	.INCBIN ".\\images\\boss.pic"
 .ENDS

@@ -27,8 +27,8 @@ Stage1:
 ;???	sta $210D
 
 	;put sprite #0 on screen
-	;lda #$54
-	lda %#0101 0100
+	lda #$54
+	;lda %#0101 0100
 	sta SpriteBuf2
 
 	;set the sprite to the highest priority
@@ -134,10 +134,10 @@ _AButton:
 	and	#$80
 	beq	_down
 
-	ldx	MapY
-	dex
-	dex
-	stx	MapY
+;	ldx	MapY
+;	dex
+;	dex
+;	stx	MapY
 	
 	lda #JumpStrength
 	sta JumpPower
@@ -201,10 +201,10 @@ _left:
 	sta PlayerPosX
 DontMoveLeft:
 
-	ldx	MapX
-	dex
-	dex
-	stx	MapX
+;	ldx	MapX
+;	dex
+;	dex
+;	stx	MapX
 
 	lda	CurrentFrame
 	and	#$F0
@@ -232,10 +232,10 @@ _right:
 	sta PlayerPosX
 DontMoveRight:
 
-	ldx	MapX
-	inx
-	inx
-	stx	MapX
+;	ldx	MapX
+;	inx
+;	inx
+;	stx	MapX
 
 	lda	CurrentFrame
 	and	#$F0

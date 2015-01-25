@@ -1,3 +1,4 @@
+; future reference: http://www.cs.umb.edu/~bazz/snes/wladx/loromtohirom/
 	
 ; $4218
 .EQU Button_A		$80

@@ -11,6 +11,7 @@ rem pcx2snes cutewendy1 -screen
 
 pcx2snes hero -c16
 pcx2snes bullets -c16
+pcx2snes boss -screen -o128
 
 rem pcx2snes title -screen
 
