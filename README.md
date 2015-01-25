@@ -1,3 +1,7 @@
+Requires ZSNES.
+
+To run, load up main.fig
+
 Resources and references:
 
     http://wiki.superfamicom.org/snes/show/HomePage
